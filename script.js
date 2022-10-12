@@ -37,6 +37,9 @@ const createCustomElement = (element, className, innerText) => {
  * @param {string} product.thumbnail - URL da imagem do produto.
  * @returns {Element} Elemento de produto.
  */
+const cartItemClickListener = (event) => {
+  event.target.remove();
+};
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
   section.className = 'item';
@@ -81,6 +84,23 @@ const produtos = async () => {
     itens.appendChild(createProductItemElement(obj));
   });
 };
+const carrinho = async (product) => {
+  const results = await fetchItem(product);
+  const itens = document.getElementsByClassName('cart__items')[0];
+  const { id, title, price } = results;
+  const obj = { id, title, price };
+  itens.appendChild(createCartItemElement(obj));
+};
+const clicar = () => {
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('item__add')) {
+    const filho = (event.target.parentNode.firstChild.innerHTML);
+    carrinho(filho);
+  }
+});
+};
+
 window.onload = () => {
   produtos();
+  clicar();
 };
