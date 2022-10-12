@@ -75,7 +75,7 @@ const createCartItemElement = ({ id, title, price }) => {
 const produtos = async () => {
   const { results } = await fetchProducts('computador');
   const itens = document.getElementsByClassName('items')[0];
-  results.forEach((product) => {
+  results.forEach((product) => { 
     const { id, title, thumbnail } = product;
     const obj = { id, title, thumbnail };
     itens.appendChild(createProductItemElement(obj));
