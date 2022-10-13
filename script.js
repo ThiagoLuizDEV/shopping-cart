@@ -57,9 +57,13 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
  */
 const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
 
+const cartItem = document.querySelector('.cart__items'); 
 const cartItemClickListener = (event) => {
   event.target.remove();
+  saveCartItems(cartItem.innerHTML);
 };
+
+cartItem.addEventListener('click', cartItemClickListener);
 /**
  * Função responsável por criar e retornar um item do carrinho.
  * @param {Object} product - Objeto do produto.
@@ -72,7 +76,6 @@ const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
   return li;
 };
 
@@ -85,12 +88,14 @@ const produtos = async () => {
     itens.appendChild(createProductItemElement(obj));
   });
 };
+
 const carrinho = async (product) => {
   const results = await fetchItem(product);
   const itens = document.getElementsByClassName('cart__items')[0];
   const { id, title, price } = results;
   const obj = { id, title, price };
   itens.appendChild(createCartItemElement(obj));
+  saveCartItems(itens.innerHTML);
 };
 const clicar = () => {
 document.addEventListener('click', (event) => {
@@ -119,4 +124,5 @@ window.onload = () => {
   produtos();
   clicar();
   remove();
+  cartItem.innerHTML = getSavedCartItems();
 };
