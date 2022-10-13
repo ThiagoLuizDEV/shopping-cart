@@ -37,9 +37,7 @@ const createCustomElement = (element, className, innerText) => {
  * @param {string} product.thumbnail - URL da imagem do produto.
  * @returns {Element} Elemento de produto.
  */
-const cartItemClickListener = (event) => {
-  event.target.remove();
-};
+
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
   section.className = 'item';
@@ -59,6 +57,9 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
  */
 const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
 
+const cartItemClickListener = (event) => {
+  event.target.remove();
+};
 /**
  * Função responsável por criar e retornar um item do carrinho.
  * @param {Object} product - Objeto do produto.
@@ -99,8 +100,23 @@ document.addEventListener('click', (event) => {
   }
 });
 };
-
+const CartElement = () => {
+  const ol = document.createElement('ol');
+  const cart = document.querySelector('.cart');
+  ol.className = 'cart__items';
+  cart.appendChild(ol);
+  return ol;
+};
+const remove = () => {
+  const cartItems = document.querySelectorAll('.cart__items');
+  const removeCart = document.querySelector('.empty-cart');
+  removeCart.addEventListener('click', () => {
+    if (cartItems.length > 0) cartItems.forEach((event) => event.parentNode.removeChild(event));
+    CartElement();
+  });
+};
 window.onload = () => {
   produtos();
   clicar();
+  remove();
 };
